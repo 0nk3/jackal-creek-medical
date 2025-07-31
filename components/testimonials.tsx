@@ -77,7 +77,7 @@ export function TestimonialsSection() {
                     
                     <div className="flex items-center space-x-1 mb-3">
                       {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 text-yellow-500 fill-current" />
+                        <Star key={`${testimonial.id}-star-${i}`} className="w-4 h-4 text-yellow-500 fill-current" />
                       ))}
                     </div>
 
@@ -106,8 +106,8 @@ export function TestimonialsSection() {
           <p className="text-gray-400 mb-4">Join hundreds of satisfied patients</p>
           <div className="flex items-center justify-center space-x-2">
             <div className="flex items-center space-x-1">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-5 h-5 text-yellow-500 fill-current" />
+              {["star1", "star2", "star3", "star4", "star5"].map((key) => (
+                <Star key={key} className="w-5 h-5 text-yellow-500 fill-current" />
               ))}
             </div>
             <span className="text-lg font-semibold">4.9/5</span>

@@ -10,7 +10,7 @@ interface FadeInProps {
   className?: string
 }
 
-export function FadeIn({ children, delay = 0, direction = "up", className = "" }: FadeInProps) {
+export function FadeIn({ children, delay = 0, direction = "up", className = "" }: Readonly<FadeInProps>) {
   const directionOffset = {
     up: { y: 20 },
     down: { y: -20 },
@@ -48,7 +48,7 @@ interface StaggerContainerProps {
   staggerDelay?: number
 }
 
-export function StaggerContainer({ children, className = "", staggerDelay = 0.1 }: StaggerContainerProps) {
+export function StaggerContainer({ children, className = "", staggerDelay = 0.1 }: Readonly<StaggerContainerProps>) {
   return (
     <motion.div
       initial="hidden"
@@ -74,7 +74,7 @@ interface StaggerItemProps {
   className?: string
 }
 
-export function StaggerItem({ children, className = "" }: StaggerItemProps) {
+export function StaggerItem({ children, className = "" }: Readonly<StaggerItemProps>) {
   return (
     <motion.div
       variants={{
