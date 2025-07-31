@@ -18,7 +18,7 @@ export function GoogleMapsEmbed({
   )}`;
 
   // Google Maps Embed URL
-  const mapsEmbedUrl = `https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_GOOGLE_MAPS_API_KEY}&q=${encodeURIComponent(
+  const mapsEmbedUrl = `https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&q=${encodeURIComponent(
     address
   )}&zoom=15`;
 
@@ -27,7 +27,7 @@ export function GoogleMapsEmbed({
       <Card className="medical-card overflow-hidden">
         <CardContent className="p-0">
           {/* Google Maps Embed */}
-          {process.env.NEXT_GOOGLE_MAPS_API_KEY ? (
+          {process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ? (
             <iframe
               src={mapsEmbedUrl}
               width="100%"
