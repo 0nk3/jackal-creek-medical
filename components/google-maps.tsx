@@ -10,7 +10,7 @@ interface GoogleMapsProps {
 }
 
 export function GoogleMapsEmbed({
-  address = "Jackal Creek Corner, Roodepoort, South Africa",
+  address = "Jackal Creek Medical Center, Shop No. 6 Boundary Rd & Aureole Ave, North Riding AH, Roodepoort, 2162",
   className = "",
 }: Readonly<GoogleMapsProps>) {
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
@@ -48,7 +48,10 @@ export function GoogleMapsEmbed({
                   Jackal Creek Medical Centre
                 </h3>
                 <p className="text-gray-400 mb-4">
-                  Jackal Creek Corner, Roodepoort
+                  Shop No. 6 Boundary Rd & Aureole Ave
+                </p>
+                <p className="text-gray-400 mb-4">
+                  North Riding AH, Roodepoort, 2162
                 </p>
                 <p className="text-sm text-gray-500 mb-6">
                   Google Maps API key not configured
@@ -72,8 +75,8 @@ export function GoogleMapsEmbed({
           <CardContent className="p-4">
             <h4 className="font-semibold mb-2">Public Transport</h4>
             <p className="text-sm text-gray-400">
-              Accessible via taxi routes and bus stops near Jackal Creek Corner
-              shopping center.
+              Accessible via taxi routes and bus stops near Boundary Road and 
+              Aureole Avenue intersection in North Riding.
             </p>
           </CardContent>
         </Card>

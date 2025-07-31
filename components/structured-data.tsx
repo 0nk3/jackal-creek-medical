@@ -10,8 +10,9 @@ export function StructuredData() {
     "telephone": "+27-11-958-0866",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Jackal Creek Corner",
+      "streetAddress": "Shop No. 6 Boundary Rd & Aureole Ave, North Riding AH",
       "addressLocality": "Roodepoort",
+      "postalCode": "2162",
       "addressRegion": "Gauteng",
       "addressCountry": "ZA"
     },
@@ -46,10 +47,10 @@ export function StructuredData() {
     },
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Jackal Creek Corner",
+      "streetAddress": "Shop No. 6 Boundary Rd & Aureole Ave, North Riding AH",
       "addressLocality": "Roodepoort",
       "addressRegion": "Gauteng",
-      "postalCode": "1724",
+      "postalCode": "2162",
       "addressCountry": "ZA"
     },
     "sameAs": [

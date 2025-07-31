@@ -1,48 +1,114 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Phone, Mail, MapPin, Clock, Send, Facebook, Instagram } from "lucide-react"
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Clock,
+  Send,
+  Share2,
+  AlertCircle,
+} from "lucide-react";
+import { z } from "zod";
+import { GoogleMapsEmbed } from "@/components/google-maps";
+
+// Validation schema
+const contactSchema = z.object({
+  name: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .max(50, "Name is too long"),
+  email: z.string().email("Please enter a valid email address"),
+  phone: z
+    .string()
+    .min(10, "Phone number must be at least 10 digits")
+    .max(15, "Phone number is too long")
+    .optional()
+    .or(z.literal("")),
+  message: z
+    .string()
+    .min(10, "Please provide more details (minimum 10 characters)")
+    .max(1000, "Message is too long"),
+});
+
+type ContactData = z.infer<typeof contactSchema>;
 
 export default function ContactPage() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ContactData>({
     name: "",
     email: "",
     phone: "",
     message: "",
-  })
-  const [isSubmitted, setIsSubmitted] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  });
+  const [errors, setErrors] = useState<
+    Partial<Record<keyof ContactData, string>>
+  >({});
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (field: keyof ContactData, value: string) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
-    }))
-  }
+    }));
+
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors((prev) => ({
+        ...prev,
+        [field]: undefined,
+      }));
+    }
+  };
+
+  const validateForm = (): boolean => {
+    try {
+      contactSchema.parse(formData);
+      setErrors({});
+      return true;
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const newErrors: Partial<Record<keyof ContactData, string>> = {};
+        error.errors.forEach((err) => {
+          if (err.path[0]) {
+            newErrors[err.path[0] as keyof ContactData] = err.message;
+          }
+        });
+        setErrors(newErrors);
+      }
+      return false;
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
+    e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsLoading(true);
 
     // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    setIsLoading(false)
-    setIsSubmitted(true)
+    setIsLoading(false);
+    setIsSubmitted(true);
 
     // Reset form after 3 seconds
     setTimeout(() => {
-      setIsSubmitted(false)
-      setFormData({ name: "", email: "", phone: "", message: "" })
-    }, 3000)
-  }
+      setIsSubmitted(false);
+      setFormData({ name: "", email: "", phone: "", message: "" });
+    }, 3000);
+  };
 
   return (
     <div className="min-h-screen py-20">
@@ -53,8 +119,8 @@ export default function ContactPage() {
             <span className="gradient-text">Contact Us</span>
           </h1>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            Get in touch with our team. We're here to help with any questions about our services or to assist with your
-            healthcare needs.
+            Get in touch with our team. We're here to help with any questions
+            about our services or to assist with your healthcare needs.
           </p>
         </div>
 
@@ -80,8 +146,8 @@ export default function ContactPage() {
                   <MapPin className="w-5 h-5 text-red-500 mt-1" />
                   <div>
                     <h3 className="font-semibold mb-1">Address</h3>
-                    <p className="text-gray-400">Jackal Creek Corner</p>
-                    <p className="text-gray-400">Roodepoort, South Africa</p>
+                    <p className="text-gray-400">Shop No. 6 Boundary Rd &, Aureole Ave</p>
+                    <p className="text-gray-400">North Riding AH, Roodepoort, 2162</p>
                   </div>
                 </div>
 
@@ -98,7 +164,7 @@ export default function ContactPage() {
                 </div>
 
                 <div className="flex items-start space-x-4">
-                  <Facebook className="w-5 h-5 text-red-500 mt-1" />
+                  <Share2 className="w-5 h-5 text-red-500 mt-1" />
                   <div>
                     <h3 className="font-semibold mb-1">Follow Us</h3>
                     <div className="flex items-center space-x-4">
@@ -108,7 +174,9 @@ export default function ContactPage() {
                         rel="noopener noreferrer"
                         className="text-gray-400 hover:text-blue-500 transition-colors duration-200 flex items-center space-x-2"
                       >
-                        <Facebook className="w-4 h-4" />
+                        <div className="w-4 h-4 bg-blue-600 rounded-sm flex items-center justify-center text-white text-xs font-bold">
+                          f
+                        </div>
                         <span>Facebook</span>
                       </a>
                       <a
@@ -117,7 +185,9 @@ export default function ContactPage() {
                         rel="noopener noreferrer"
                         className="text-gray-400 hover:text-pink-500 transition-colors duration-200 flex items-center space-x-2"
                       >
-                        <Instagram className="w-4 h-4" />
+                        <div className="w-4 h-4 bg-gradient-to-br from-purple-500 to-pink-500 rounded-sm flex items-center justify-center text-white text-xs font-bold">
+                          @
+                        </div>
                         <span>Instagram</span>
                       </a>
                     </div>
@@ -181,69 +251,142 @@ export default function ContactPage() {
                 {isSubmitted ? (
                   <div className="text-center py-8">
                     <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      <svg
+                        className="w-8 h-8 text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
                       </svg>
                     </div>
-                    <h3 className="text-xl font-semibold mb-2">Message Sent!</h3>
-                    <p className="text-gray-400">We'll get back to you within 24 hours.</p>
+                    <h3 className="text-xl font-semibold mb-2">
+                      Message Sent!
+                    </h3>
+                    <p className="text-gray-400">
+                      We'll get back to you within 24 hours.
+                    </p>
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="name">Full Name *</Label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <Label htmlFor="name" className="text-sm font-medium">
+                          Full Name *
+                        </Label>
                         <Input
                           id="name"
                           type="text"
                           required
                           value={formData.name}
-                          onChange={(e) => handleInputChange("name", e.target.value)}
-                          className="bg-gray-800 border-gray-700 text-white mt-1"
+                          onChange={(e) =>
+                            handleInputChange("name", e.target.value)
+                          }
+                          className={`bg-gray-800/50 border-gray-600 text-white rounded-xl px-4 py-3 transition-all duration-200 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 ${
+                            errors.name ? "border-red-500 bg-red-500/10" : ""
+                          }`}
                           placeholder="Your full name"
                         />
+                        {errors.name && (
+                          <div className="flex items-center space-x-2 text-red-400 text-sm">
+                            <AlertCircle className="w-4 h-4" />
+                            <span>{errors.name}</span>
+                          </div>
+                        )}
                       </div>
-                      <div>
-                        <Label htmlFor="phone">Phone Number</Label>
+                      <div className="space-y-2">
+                        <Label htmlFor="phone" className="text-sm font-medium">
+                          Phone Number
+                        </Label>
                         <Input
                           id="phone"
                           type="tel"
                           value={formData.phone}
-                          onChange={(e) => handleInputChange("phone", e.target.value)}
-                          className="bg-gray-800 border-gray-700 text-white mt-1"
+                          onChange={(e) =>
+                            handleInputChange("phone", e.target.value)
+                          }
+                          className={`bg-gray-800/50 border-gray-600 text-white rounded-xl px-4 py-3 transition-all duration-200 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 ${
+                            errors.phone ? "border-red-500 bg-red-500/10" : ""
+                          }`}
                           placeholder="Your phone number"
                         />
+                        {errors.phone && (
+                          <div className="flex items-center space-x-2 text-red-400 text-sm">
+                            <AlertCircle className="w-4 h-4" />
+                            <span>{errors.phone}</span>
+                          </div>
+                        )}
                       </div>
                     </div>
 
-                    <div>
-                      <Label htmlFor="email">Email Address *</Label>
+                    <div className="space-y-2">
+                      <Label htmlFor="email" className="text-sm font-medium">
+                        Email Address *
+                      </Label>
                       <Input
                         id="email"
                         type="email"
                         required
                         value={formData.email}
-                        onChange={(e) => handleInputChange("email", e.target.value)}
-                        className="bg-gray-800 border-gray-700 text-white mt-1"
-                        placeholder="your.email@example.com"
+                        onChange={(e) =>
+                          handleInputChange("email", e.target.value)
+                        }
+                        className={`bg-gray-800/50 border-gray-600 text-white rounded-xl px-4 py-3 transition-all duration-200 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 ${
+                          errors.email ? "border-red-500 bg-red-500/10" : ""
+                        }`}
+                        placeholder="email@example.com"
                       />
+                      {errors.email && (
+                        <div className="flex items-center space-x-2 text-red-400 text-sm">
+                          <AlertCircle className="w-4 h-4" />
+                          <span>{errors.email}</span>
+                        </div>
+                      )}
                     </div>
 
-                    <div>
-                      <Label htmlFor="message">Message *</Label>
+                    <div className="space-y-2">
+                      <Label htmlFor="message" className="text-sm font-medium">
+                        Message *
+                      </Label>
                       <Textarea
                         id="message"
                         required
                         value={formData.message}
-                        onChange={(e) => handleInputChange("message", e.target.value)}
-                        className="bg-gray-800 border-gray-700 text-white mt-1"
+                        onChange={(e) =>
+                          handleInputChange("message", e.target.value)
+                        }
+                        className={`bg-gray-800/50 border-gray-600 text-white rounded-xl px-4 py-3 transition-all duration-200 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 resize-none ${
+                          errors.message ? "border-red-500 bg-red-500/10" : ""
+                        }`}
                         placeholder="How can we help you?"
                         rows={6}
                       />
+                      {errors.message && (
+                        <div className="flex items-center space-x-2 text-red-400 text-sm">
+                          <AlertCircle className="w-4 h-4" />
+                          <span>{errors.message}</span>
+                        </div>
+                      )}
                     </div>
 
-                    <Button type="submit" className="btn-primary w-full" disabled={isLoading}>
-                      {isLoading ? "Sending..." : "Send Message"}
+                    <Button
+                      type="submit"
+                      className="btn-primary w-full py-3 rounded-xl font-medium text-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <div className="flex items-center space-x-2">
+                          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                          <span>Sending...</span>
+                        </div>
+                      ) : (
+                        "Send Message"
+                      )}
                     </Button>
                   </form>
                 )}
@@ -256,22 +399,14 @@ export default function ContactPage() {
         <section className="mt-20">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Find Us</h2>
-            <p className="text-gray-400">Located in the heart of Jackal Creek Corner, Roodepoort</p>
+            <p className="text-gray-400">
+              Located in the heart of North Riding, Roodepoort
+            </p>
           </div>
 
-          <Card className="medical-card">
-            <CardContent className="p-8 text-center">
-              <MapPin className="w-16 h-16 text-red-500 mx-auto mb-4" />
-              <h3 className="text-2xl font-semibold mb-2">Jackal Creek Medical Centre</h3>
-              <p className="text-gray-400 mb-4">Jackal Creek Corner, Roodepoort, South Africa</p>
-              <p className="text-sm text-gray-500 mb-6">
-                Interactive Google Maps integration available for detailed directions and navigation
-              </p>
-              <Button className="btn-primary">Get Directions</Button>
-            </CardContent>
-          </Card>
+          <GoogleMapsEmbed />
         </section>
       </div>
     </div>
-  )
+  );
 }

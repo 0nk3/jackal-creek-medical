@@ -9,10 +9,24 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Calendar, Clock, User, Phone, Mail, FileText } from "lucide-react"
+import { Calendar, Clock, User, Phone, Mail, FileText, AlertCircle } from "lucide-react"
+import { z } from "zod"
+
+// Validation schema
+const bookingSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters").max(50, "Name is too long"),
+  email: z.string().email("Please enter a valid email address"),
+  phone: z.string().min(10, "Phone number must be at least 10 digits").max(15, "Phone number is too long"),
+  doctor: z.string().min(1, "Please select a doctor"),
+  date: z.string().min(1, "Please select a date"),
+  time: z.string().min(1, "Please select a time"),
+  reason: z.string().min(10, "Please provide more details about your visit (minimum 10 characters)").max(500, "Description is too long"),
+})
+
+type BookingData = z.infer<typeof bookingSchema>
 
 export default function BookingPage() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<BookingData>({
     name: "",
     email: "",
     phone: "",
@@ -21,18 +35,51 @@ export default function BookingPage() {
     time: "",
     reason: "",
   })
+  const [errors, setErrors] = useState<Partial<Record<keyof BookingData, string>>>({})
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (field: keyof BookingData, value: string) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
     }))
+    
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors((prev) => ({
+        ...prev,
+        [field]: undefined,
+      }))
+    }
+  }
+
+  const validateForm = (): boolean => {
+    try {
+      bookingSchema.parse(formData)
+      setErrors({})
+      return true
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const newErrors: Partial<Record<keyof BookingData, string>> = {}
+        error.errors.forEach((err) => {
+          if (err.path[0]) {
+            newErrors[err.path[0] as keyof BookingData] = err.message
+          }
+        })
+        setErrors(newErrors)
+      }
+      return false
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (!validateForm()) {
+      return
+    }
+    
     setIsLoading(true)
 
     // Simulate form submission
@@ -115,9 +162,9 @@ export default function BookingPage() {
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Personal Information */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="name" className="flex items-center space-x-2 mb-2">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="name" className="flex items-center space-x-2 text-sm font-medium">
                         <User className="w-4 h-4 text-red-500" />
                         <span>Full Name *</span>
                       </Label>
@@ -127,12 +174,20 @@ export default function BookingPage() {
                         required
                         value={formData.name}
                         onChange={(e) => handleInputChange("name", e.target.value)}
-                        className="bg-gray-800 border-gray-700 text-white"
+                        className={`bg-gray-800/50 border-gray-600 text-white rounded-xl px-4 py-3 transition-all duration-200 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 ${
+                          errors.name ? "border-red-500 bg-red-500/10" : ""
+                        }`}
                         placeholder="Enter your full name"
                       />
+                      {errors.name && (
+                        <div className="flex items-center space-x-2 text-red-400 text-sm">
+                          <AlertCircle className="w-4 h-4" />
+                          <span>{errors.name}</span>
+                        </div>
+                      )}
                     </div>
-                    <div>
-                      <Label htmlFor="phone" className="flex items-center space-x-2 mb-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="phone" className="flex items-center space-x-2 text-sm font-medium">
                         <Phone className="w-4 h-4 text-red-500" />
                         <span>Phone Number *</span>
                       </Label>
@@ -142,14 +197,22 @@ export default function BookingPage() {
                         required
                         value={formData.phone}
                         onChange={(e) => handleInputChange("phone", e.target.value)}
-                        className="bg-gray-800 border-gray-700 text-white"
-                        placeholder="e.g., 011 123 4567"
+                        className={`bg-gray-800/50 border-gray-600 text-white rounded-xl px-4 py-3 transition-all duration-200 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 ${
+                          errors.phone ? "border-red-500 bg-red-500/10" : ""
+                        }`}
+                        placeholder="011 123 4567"
                       />
+                      {errors.phone && (
+                        <div className="flex items-center space-x-2 text-red-400 text-sm">
+                          <AlertCircle className="w-4 h-4" />
+                          <span>{errors.phone}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
 
-                  <div>
-                    <Label htmlFor="email" className="flex items-center space-x-2 mb-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="flex items-center space-x-2 text-sm font-medium">
                       <Mail className="w-4 h-4 text-red-500" />
                       <span>Email Address *</span>
                     </Label>
@@ -159,32 +222,48 @@ export default function BookingPage() {
                       required
                       value={formData.email}
                       onChange={(e) => handleInputChange("email", e.target.value)}
-                      className="bg-gray-800 border-gray-700 text-white"
-                      placeholder="your.email@example.com"
+                      className={`bg-gray-800/50 border-gray-600 text-white rounded-xl px-4 py-3 transition-all duration-200 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 ${
+                        errors.email ? "border-red-500 bg-red-500/10" : ""
+                      }`}
+                      placeholder="email@example.com"
                     />
+                    {errors.email && (
+                      <div className="flex items-center space-x-2 text-red-400 text-sm">
+                        <AlertCircle className="w-4 h-4" />
+                        <span>{errors.email}</span>
+                      </div>
+                    )}
                   </div>
 
                   {/* Appointment Details */}
-                  <div>
-                    <Label htmlFor="doctor" className="flex items-center space-x-2 mb-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="doctor" className="flex items-center space-x-2 text-sm font-medium">
                       <User className="w-4 h-4 text-red-500" />
                       <span>Preferred Doctor *</span>
                     </Label>
-                    <Select value={formData.doctor} onValueChange={(value) => handleInputChange("doctor", value)}>
-                      <SelectTrigger className="bg-gray-800 border-gray-700 text-white">
+                    <Select value={formData.doctor} onValueChange={(value: string) => handleInputChange("doctor", value)}>
+                      <SelectTrigger className={`bg-gray-800/50 border-gray-600 text-white rounded-xl px-4 py-3 transition-all duration-200 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 ${
+                        errors.doctor ? "border-red-500 bg-red-500/10" : ""
+                      }`}>
                         <SelectValue placeholder="Select a doctor" />
                       </SelectTrigger>
-                      <SelectContent className="bg-gray-800 border-gray-700">
-                        <SelectItem value="dr-ntendeni">Dr. Ntendeni (General Practitioner)</SelectItem>
-                        <SelectItem value="dr-diana">Dr. Diana (Dentist)</SelectItem>
-                        <SelectItem value="any">Any Available Doctor</SelectItem>
+                      <SelectContent className="bg-gray-800 border-gray-700 rounded-xl">
+                        <SelectItem value="dr-ntendeni" className="hover:bg-gray-700">Dr. Ntendeni (General Practitioner)</SelectItem>
+                        <SelectItem value="dr-diana" className="hover:bg-gray-700">Dr. Diana (Dentist)</SelectItem>
+                        <SelectItem value="any" className="hover:bg-gray-700">Any Available Doctor</SelectItem>
                       </SelectContent>
                     </Select>
+                    {errors.doctor && (
+                      <div className="flex items-center space-x-2 text-red-400 text-sm">
+                        <AlertCircle className="w-4 h-4" />
+                        <span>{errors.doctor}</span>
+                      </div>
+                    )}
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="date" className="flex items-center space-x-2 mb-2">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="date" className="flex items-center space-x-2 text-sm font-medium">
                         <Calendar className="w-4 h-4 text-red-500" />
                         <span>Preferred Date *</span>
                       </Label>
@@ -194,49 +273,84 @@ export default function BookingPage() {
                         required
                         value={formData.date}
                         onChange={(e) => handleInputChange("date", e.target.value)}
-                        className="bg-gray-800 border-gray-700 text-white"
+                        className={`bg-gray-800/50 border-gray-600 text-white rounded-xl px-4 py-3 transition-all duration-200 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 ${
+                          errors.date ? "border-red-500 bg-red-500/10" : ""
+                        }`}
                         min={new Date().toISOString().split("T")[0]}
                       />
+                      {errors.date && (
+                        <div className="flex items-center space-x-2 text-red-400 text-sm">
+                          <AlertCircle className="w-4 h-4" />
+                          <span>{errors.date}</span>
+                        </div>
+                      )}
                     </div>
-                    <div>
-                      <Label htmlFor="time" className="flex items-center space-x-2 mb-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="time" className="flex items-center space-x-2 text-sm font-medium">
                         <Clock className="w-4 h-4 text-red-500" />
                         <span>Preferred Time *</span>
                       </Label>
-                      <Select value={formData.time} onValueChange={(value) => handleInputChange("time", value)}>
-                        <SelectTrigger className="bg-gray-800 border-gray-700 text-white">
+                      <Select value={formData.time} onValueChange={(value: string) => handleInputChange("time", value)}>
+                        <SelectTrigger className={`bg-gray-800/50 border-gray-600 text-white rounded-xl px-4 py-3 transition-all duration-200 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 ${
+                          errors.time ? "border-red-500 bg-red-500/10" : ""
+                        }`}>
                           <SelectValue placeholder="Select time" />
                         </SelectTrigger>
-                        <SelectContent className="bg-gray-800 border-gray-700">
-                          <SelectItem value="09:00">09:00 AM</SelectItem>
-                          <SelectItem value="10:00">10:00 AM</SelectItem>
-                          <SelectItem value="11:00">11:00 AM</SelectItem>
-                          <SelectItem value="12:00">12:00 PM</SelectItem>
-                          <SelectItem value="14:00">02:00 PM</SelectItem>
-                          <SelectItem value="15:00">03:00 PM</SelectItem>
-                          <SelectItem value="16:00">04:00 PM</SelectItem>
+                        <SelectContent className="bg-gray-800 border-gray-700 rounded-xl">
+                          <SelectItem value="09:00" className="hover:bg-gray-700">09:00 AM</SelectItem>
+                          <SelectItem value="10:00" className="hover:bg-gray-700">10:00 AM</SelectItem>
+                          <SelectItem value="11:00" className="hover:bg-gray-700">11:00 AM</SelectItem>
+                          <SelectItem value="12:00" className="hover:bg-gray-700">12:00 PM</SelectItem>
+                          <SelectItem value="14:00" className="hover:bg-gray-700">02:00 PM</SelectItem>
+                          <SelectItem value="15:00" className="hover:bg-gray-700">03:00 PM</SelectItem>
+                          <SelectItem value="16:00" className="hover:bg-gray-700">04:00 PM</SelectItem>
                         </SelectContent>
                       </Select>
+                      {errors.time && (
+                        <div className="flex items-center space-x-2 text-red-400 text-sm">
+                          <AlertCircle className="w-4 h-4" />
+                          <span>{errors.time}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
 
-                  <div>
-                    <Label htmlFor="reason" className="flex items-center space-x-2 mb-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="reason" className="flex items-center space-x-2 text-sm font-medium">
                       <FileText className="w-4 h-4 text-red-500" />
-                      <span>Reason for Visit</span>
+                      <span>Reason for Visit *</span>
                     </Label>
                     <Textarea
                       id="reason"
                       value={formData.reason}
                       onChange={(e) => handleInputChange("reason", e.target.value)}
-                      className="bg-gray-800 border-gray-700 text-white"
+                      className={`bg-gray-800/50 border-gray-600 text-white rounded-xl px-4 py-3 transition-all duration-200 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 resize-none ${
+                        errors.reason ? "border-red-500 bg-red-500/10" : ""
+                      }`}
                       placeholder="Please describe your symptoms or reason for the visit..."
                       rows={4}
                     />
+                    {errors.reason && (
+                      <div className="flex items-center space-x-2 text-red-400 text-sm">
+                        <AlertCircle className="w-4 h-4" />
+                        <span>{errors.reason}</span>
+                      </div>
+                    )}
                   </div>
 
-                  <Button type="submit" className="btn-primary w-full" disabled={isLoading}>
-                    {isLoading ? "Submitting..." : "Book Appointment"}
+                  <Button 
+                    type="submit" 
+                    className="btn-primary w-full py-3 rounded-xl font-medium text-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]" 
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <div className="flex items-center space-x-2">
+                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                        <span>Submitting...</span>
+                      </div>
+                    ) : (
+                      "Book Appointment"
+                    )}
                   </Button>
                 </form>
               </CardContent>

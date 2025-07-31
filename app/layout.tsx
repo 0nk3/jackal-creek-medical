@@ -12,7 +12,7 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Jackal Creek Medical Centre - Premium Healthcare in Roodepoort",
   description:
-    "Professional medical and dental services in Jackal Creek Corner, Roodepoort, South Africa. Offering comprehensive healthcare with experienced doctors and modern facilities.",
+    "Professional medical and dental services in North Riding, Roodepoort, South Africa. Offering comprehensive healthcare with experienced doctors and modern facilities.",
   keywords: "medical centre, dentist, doctor, healthcare, Roodepoort, South Africa, dental services, medical services",
   openGraph: {
     title: "Jackal Creek Medical Centre",

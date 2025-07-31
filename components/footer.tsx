@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Phone, MapPin, Clock, Facebook, Instagram, Mail } from "lucide-react"
+import { Phone, MapPin, Clock, Mail } from "lucide-react"
 
 export function Footer() {
   return (
@@ -17,12 +17,12 @@ export function Footer() {
               <span className="text-xl font-bold text-white">Jackal Creek Medical Centre</span>
             </div>
             <p className="text-gray-400 mb-4">
-              Providing premium healthcare services in Jackal Creek Corner, Roodepoort. Our experienced team offers
+              Providing premium healthcare services in North Riding, Roodepoort. Our experienced team offers
               comprehensive medical and dental care in a modern, comfortable environment.
             </p>
             <div className="flex items-center space-x-1 text-gray-400">
               <MapPin className="w-4 h-4" />
-              <span>Jackal Creek Corner, Roodepoort, South Africa</span>
+              <span>Shop No. 6 Boundary Rd & Aureole Ave, North Riding AH, Roodepoort, 2162</span>
             </div>
           </div>
 
@@ -82,19 +82,23 @@ export function Footer() {
                   href="https://www.facebook.com/profile.php?id=100064764169045"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-blue-500 transition-colors duration-200"
+                  className="text-gray-400 hover:text-blue-500 transition-colors duration-200 flex items-center justify-center"
                   aria-label="Follow us on Facebook"
                 >
-                  <Facebook className="w-5 h-5" />
+                  <div className="w-5 h-5 bg-blue-600 rounded-sm flex items-center justify-center text-white text-xs font-bold">
+                    f
+                  </div>
                 </a>
                 <a
                   href="https://www.instagram.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-pink-500 transition-colors duration-200"
+                  className="text-gray-400 hover:text-pink-500 transition-colors duration-200 flex items-center justify-center"
                   aria-label="Follow us on Instagram"
                 >
-                  <Instagram className="w-5 h-5" />
+                  <div className="w-5 h-5 bg-gradient-to-br from-purple-500 to-pink-500 rounded-sm flex items-center justify-center text-white text-xs font-bold">
+                    @
+                  </div>
                 </a>
                 <a
                   href="mailto:info@jackalcreekmedical.co.za"

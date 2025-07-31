@@ -3,7 +3,6 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Phone, MapPin, Clock, Users, Award, Heart } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { TestimonialsSection } from "@/components/testimonials"
 import { GoogleMapsEmbed } from "@/components/google-maps"
 
 export default function HomePage() {
@@ -37,7 +36,7 @@ export default function HomePage() {
                   <MapPin className="w-5 h-5 text-red-500" />
                   <div>
                     <div className="text-sm text-gray-400">Location</div>
-                    <div className="font-semibold">Jackal Creek Corner</div>
+                    <div className="font-semibold">North Riding, Roodepoort</div>
                   </div>
                 </div>
               </div>
@@ -111,12 +110,116 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Patient Testimonials */}
+      <section className="py-20 bg-gray-900/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              <span className="gradient-text">What Our Patients Say</span>
+            </h2>
+            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+              Real experiences from our valued patients highlight the quality care and compassionate service at Jackal Creek Medical Centre.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Testimonial 1 */}
+            <Card className="medical-card">
+              <CardContent className="p-6">
+                <div className="flex items-center mb-4">
+                  <div className="flex text-yellow-400">
+                    {[...Array(5)].map((_, i) => (
+                      <svg key={i} className="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                        <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                      </svg>
+                    ))}
+                  </div>
+                </div>
+                <p className="text-gray-300 mb-4 italic">
+                  "Dr Tshifularo is by far the best doctor I've ever experienced. Compassionate and engaging and also very thoughtful. She clearly genuinely loves helping people. I felt better and lighter just walking out of her exam room."
+                </p>
+                <div className="flex items-center">
+                  <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center text-white font-semibold mr-3">
+                    T
+                  </div>
+                  <div>
+                    <p className="font-semibold text-white">Thozama Faku</p>
+                    <p className="text-sm text-gray-400">Verified Google Review</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Testimonial 2 */}
+            <Card className="medical-card">
+              <CardContent className="p-6">
+                <div className="flex items-center mb-4">
+                  <div className="flex text-yellow-400">
+                    {[...Array(5)].map((_, i) => (
+                      <svg key={i} className="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                        <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                      </svg>
+                    ))}
+                  </div>
+                </div>
+                <p className="text-gray-300 mb-4 italic">
+                  "By Far the best Doctor ever experienced. Excellent service, attention to detail at its best and always going the extra mile. I would highly recommend Dr. Tshifularo."
+                </p>
+                <div className="flex items-center">
+                  <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center text-white font-semibold mr-3">
+                    K
+                  </div>
+                  <div>
+                    <p className="font-semibold text-white">Keke Magongoa</p>
+                    <p className="text-sm text-gray-400">Verified Google Review</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Testimonial 3 */}
+            <Card className="medical-card">
+              <CardContent className="p-6">
+                <div className="flex items-center mb-4">
+                  <div className="flex text-yellow-400">
+                    {[...Array(5)].map((_, i) => (
+                      <svg key={i} className="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                        <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                      </svg>
+                    ))}
+                  </div>
+                </div>
+                <p className="text-gray-300 mb-4 italic">
+                  "The service I always get there is unbelievable. Dr T put me at ease. Her Aura is amazing :) I have never felt so comfortable with a Dr like this before. Thank you for making my life so easy!"
+                </p>
+                <div className="flex items-center">
+                  <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center text-white font-semibold mr-3">
+                    I
+                  </div>
+                  <div>
+                    <p className="font-semibold text-white">Ingrid Mashishi</p>
+                    <p className="text-sm text-gray-400">Verified Google Review</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="text-center mt-12">
+            <p className="text-gray-400 mb-4">Experience the difference for yourself</p>
+            <Link href="/booking">
+              <Button className="btn-primary">Book Your Appointment</Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Operating Hours */}
       <section className="py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Visit Us Today</h2>
           <p className="text-xl text-gray-400 mb-12">
-            Conveniently located in Jackal Creek Corner, Roodepoort. We're here when you need us most.
+            Conveniently located in North Riding, Roodepoort. We're here when you need us most.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
@@ -147,15 +250,12 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <TestimonialsSection />
-
       {/* Map Section */}
       <section className="py-20 bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Find Us</h2>
-            <p className="text-xl text-gray-400">Located in Jackal Creek Corner, Roodepoort</p>
+            <p className="text-xl text-gray-400">Located in North Riding, Roodepoort</p>
           </div>
 
           <GoogleMapsEmbed />
