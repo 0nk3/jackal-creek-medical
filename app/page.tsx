@@ -203,6 +203,77 @@ export default function HomePage() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Testimonial 4 */}
+            <Card className="medical-card">
+              <CardContent className="p-6">
+                <div className="flex items-center mb-4">
+                  <div className="flex text-yellow-400">
+                    {[...Array(5)].map((_, i) => (
+                      <svg key={i} className="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                        <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                      </svg>
+                    ))}
+                  </div>
+                </div>
+                <p className="text-gray-300 mb-4 italic">
+                  "The service is friendly from the time you go in. I love the Dr. she takes her time and listens and examines you thoroughly. Amazing. Thanks Dr."
+                </p>
+                <div className="flex items-center">
+                  <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center text-white font-semibold mr-3">
+                    W
+                  </div>
+                  <div>
+                    <p className="font-semibold text-white">Wianka Roth</p>
+                    <p className="text-sm text-gray-400">Verified Google Review</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Testimonial 5 */}
+            <Card className="medical-card">
+              <CardContent className="p-6">
+                <div className="flex items-center mb-4">
+                  <div className="flex text-yellow-400">
+                    {[...Array(5)].map((_, i) => (
+                      <svg key={i} className="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                        <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                      </svg>
+                    ))}
+                  </div>
+                </div>
+                <p className="text-gray-300 mb-4 italic">
+                  "We received exceptional service before, during and after my son's circumcision. The ladies at reception were very professional and friendly. The Dr was amazing - my son didn't cry because she was very kind and gave him hope."
+                </p>
+                <div className="flex items-center">
+                  <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center text-white font-semibold mr-3">
+                    T
+                  </div>
+                  <div>
+                    <p className="font-semibold text-white">Thempeli Mzolo</p>
+                    <p className="text-sm text-gray-400">Verified Google Review</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Testimonial 6 - Call to Action Card */}
+            <Card className="medical-card">
+              <CardContent className="p-6 flex items-center justify-center h-full">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-red-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Heart className="w-8 h-8 text-red-500" />
+                  </div>
+                  <p className="text-gray-400 italic mb-4">
+                    "Join our family of satisfied patients"
+                  </p>
+                  <Link href="/booking">
+                    <Button className="btn-primary">Book Your Appointment</Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
           <div className="text-center mt-12">
