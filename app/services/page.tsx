@@ -11,7 +11,7 @@ const medicalServices = [
   },
   {
     icon: Activity,
-    title: "HIV Testing & Counselling",
+    title: "TB & HIV Testing & Counselling",
     description: "Confidential testing and ongoing support services",
   },
   {
@@ -21,13 +21,18 @@ const medicalServices = [
   },
   {
     icon: Baby,
-    title: "Pregnancy Monitoring & Antenatal Care",
+    title: "Pregnancy Monitoring & Antenatal Care (sonar available)",
     description: "Comprehensive prenatal care for mother and baby",
   },
   {
     icon: Shield,
     title: "Family Planning",
     description: "Contraceptive counseling and reproductive health services",
+  },
+    {
+    icon: Stethoscope,
+    title: "Male Circumcision (by appointment)",
+    description: "Safe and sterile circumcision services",
   },
   {
     icon: Stethoscope,
@@ -36,12 +41,12 @@ const medicalServices = [
   },
   {
     icon: Heart,
-    title: "Minor Trauma & Wound Care",
+    title: "Minor Trauma, Suturing & Wound Care",
     description: "Treatment of cuts, burns, and minor injuries",
   },
   {
     icon: Activity,
-    title: "Weight Loss & Nutritional Management",
+    title: "Weight Loss & Gain (Nutritional Management)",
     description: "Personalized weight management and nutrition counseling",
   },
   {
