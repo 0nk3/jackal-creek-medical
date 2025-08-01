@@ -85,7 +85,7 @@ export function Footer() {
                   className="text-gray-400 hover:text-blue-500 transition-colors duration-200 flex items-center justify-center"
                   aria-label="Follow us on Facebook"
                 >
-                  <div className="w-5 h-5 bg-blue-600 rounded-sm flex items-center justify-center text-white text-xs font-bold">
+                  <div className="w-5 h-5 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
                     f
                   </div>
                 </a>
@@ -96,7 +96,7 @@ export function Footer() {
                   className="text-gray-400 hover:text-pink-500 transition-colors duration-200 flex items-center justify-center"
                   aria-label="Follow us on Instagram"
                 >
-                  <div className="w-5 h-5 bg-gradient-to-br from-purple-500 to-pink-500 rounded-sm flex items-center justify-center text-white text-xs font-bold">
+                  <div className="w-5 h-5 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
                     @
                   </div>
                 </a>

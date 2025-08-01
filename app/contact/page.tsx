@@ -174,7 +174,7 @@ export default function ContactPage() {
                         rel="noopener noreferrer"
                         className="text-gray-400 hover:text-blue-500 transition-colors duration-200 flex items-center space-x-2"
                       >
-                        <div className="w-4 h-4 bg-blue-600 rounded-sm flex items-center justify-center text-white text-xs font-bold">
+                        <div className="w-4 h-4 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
                           f
                         </div>
                         <span>Facebook</span>
@@ -185,7 +185,7 @@ export default function ContactPage() {
                         rel="noopener noreferrer"
                         className="text-gray-400 hover:text-pink-500 transition-colors duration-200 flex items-center space-x-2"
                       >
-                        <div className="w-4 h-4 bg-gradient-to-br from-purple-500 to-pink-500 rounded-sm flex items-center justify-center text-white text-xs font-bold">
+                        <div className="w-4 h-4 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
                           @
                         </div>
                         <span>Instagram</span>

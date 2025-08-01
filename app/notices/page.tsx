@@ -115,8 +115,8 @@ export default function NoticesPage() {
                       <IconComponent className="w-6 h-6" />
                     </div>
                     <div className="flex-1">
-                      <div className="flex items-start justify-between">
-                        <div>
+                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between">
+                        <div className="flex-1">
                           <CardTitle className="text-xl mb-2 text-white">{notice.title}</CardTitle>
                           <div className="flex items-center space-x-3 mb-2">
                             <Badge className={getBadgeStyle(notice.type)}>{notice.category}</Badge>
@@ -127,7 +127,7 @@ export default function NoticesPage() {
                             )}
                           </div>
                         </div>
-                        <span className="text-sm text-gray-400 whitespace-nowrap ml-4">
+                        <span className="text-sm text-gray-400 sm:whitespace-nowrap sm:ml-4 mt-2 sm:mt-0">
                           {new Date(notice.date).toLocaleDateString("en-ZA", {
                             year: "numeric",
                             month: "short",
